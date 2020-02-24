@@ -3,7 +3,6 @@ package io.github.h2kb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Calculator {
@@ -12,17 +11,8 @@ public class Calculator {
 
     private Scanner fileScanner;
 
-    public void initData() throws FileNotFoundException {
-        Scanner in = new Scanner(System.in);
-        String[] rawData = in.nextLine().trim().split("\\s+");
-        String filePath;
-
-        try {
-            filePath = rawData[0];
-            operator = rawData[1];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new InputMismatchException("Invalid arguments: file path or operator.");
-        }
+    public Calculator(String filePath, String operator) throws FileNotFoundException {
+        this.operator = operator;
 
         try {
             fileScanner = new Scanner(new File(filePath));
@@ -73,19 +63,5 @@ public class Calculator {
                 System.out.println("Bad operator " + operator + ".");
                 return 0;
         }
-    }
-
-    public void closeData() {
-        fileScanner.close();
-    }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        Calculator calculator = new Calculator();
-
-        calculator.initData();
-        int result = calculator.calculate();
-        calculator.closeData();
-
-        System.out.println(result);
     }
 }
