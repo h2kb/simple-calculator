@@ -15,8 +15,8 @@ public class Calculator {
     public void initData() throws FileNotFoundException {
         Scanner in = new Scanner(System.in);
         String[] rawData = in.nextLine().trim().split("\\s+");
-
         String filePath;
+
         try {
             filePath = rawData[0];
             operator = rawData[1];
