@@ -7,18 +7,16 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Calculator {
-    private static String filePath;
 
-    private static String operator;
+    private String operator;
 
-    private static Scanner fileScanner;
+    private Scanner fileScanner;
 
-    private static int result;
-
-    public static void initData() throws FileNotFoundException {
+    public void initData() throws FileNotFoundException {
         Scanner in = new Scanner(System.in);
         String[] rawData = in.nextLine().trim().split("\\s+");
 
+        String filePath;
         try {
             filePath = rawData[0];
             operator = rawData[1];
@@ -31,54 +29,62 @@ public class Calculator {
         } catch (IOException e) {
             throw new FileNotFoundException("File not found.");
         }
-
-        result = Integer.parseInt(fileScanner.nextLine());
     }
 
-    private static void sum() {
+    private int sum() {
+        int result = Integer.parseInt(fileScanner.nextLine());
+
         while (fileScanner.hasNextLine()) {
             result += Integer.parseInt(fileScanner.nextLine());
         }
+
+        return result;
     }
 
-    private static void sub() {
+    private int sub() {
+        int result = Integer.parseInt(fileScanner.nextLine());
+
         while (fileScanner.hasNextLine()) {
             result -= Integer.parseInt(fileScanner.nextLine());
         }
+
+        return result;
     }
 
-    private static void mult() {
+    private int mult() {
+        int result = Integer.parseInt(fileScanner.nextLine());
+
         while (fileScanner.hasNextLine()) {
             result *= Integer.parseInt(fileScanner.nextLine());
         }
+
+        return result;
     }
 
-    public static void calculate() {
+    public int calculate() {
         switch (operator) {
             case "SUM":
-                sum();
-                break;
+                return sum();
             case "SUB":
-                sub();
-                break;
+                return sub();
             case "MULT":
-                mult();
-                break;
+                return mult();
             default:
-                result = 0;
                 System.out.println("Bad operator " + operator + ".");
-                break;
+                return 0;
         }
     }
 
-    public static void closeData() {
+    public void closeData() {
         fileScanner.close();
     }
 
-    public static void main(String[] args) throws IOException {
-        initData();
-        calculate();
-        closeData();
+    public static void main(String[] args) throws FileNotFoundException {
+        Calculator calculator = new Calculator();
+
+        calculator.initData();
+        int result = calculator.calculate();
+        calculator.closeData();
 
         System.out.println(result);
     }
