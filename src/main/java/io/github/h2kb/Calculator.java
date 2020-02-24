@@ -7,13 +7,17 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Calculator {
-    public static void main(String[] args) throws IOException {
+    private static String filePath;
+
+    private static String operator;
+
+    private static Scanner fileScanner;
+
+    private static int result;
+
+    public static void initData() throws FileNotFoundException {
         Scanner in = new Scanner(System.in);
         String[] rawData = in.nextLine().trim().split("\\s+");
-        String filePath;
-        String operator;
-        int result;
-        Scanner fileScanner;
 
         try {
             filePath = rawData[0];
@@ -29,22 +33,52 @@ public class Calculator {
         }
 
         result = Integer.parseInt(fileScanner.nextLine());
+    }
 
+    private static void sum() {
         while (fileScanner.hasNextLine()) {
-            if (operator.equals("SUM")) {
-                result += Integer.parseInt(fileScanner.nextLine());
-            } else if (operator.equals("SUB")) {
-                result -= Integer.parseInt(fileScanner.nextLine());
-            } else if (operator.equals("MULT")) {
-                result *= Integer.parseInt(fileScanner.nextLine());
-            } else {
+            result += Integer.parseInt(fileScanner.nextLine());
+        }
+    }
+
+    private static void sub() {
+        while (fileScanner.hasNextLine()) {
+            result -= Integer.parseInt(fileScanner.nextLine());
+        }
+    }
+
+    private static void mult() {
+        while (fileScanner.hasNextLine()) {
+            result *= Integer.parseInt(fileScanner.nextLine());
+        }
+    }
+
+    public static void calculate() {
+        switch (operator) {
+            case "SUM":
+                sum();
+                break;
+            case "SUB":
+                sub();
+                break;
+            case "MULT":
+                mult();
+                break;
+            default:
                 result = 0;
                 System.out.println("Bad operator " + operator + ".");
                 break;
-            }
         }
+    }
 
+    public static void closeData() {
         fileScanner.close();
+    }
+
+    public static void main(String[] args) throws IOException {
+        initData();
+        calculate();
+        closeData();
 
         System.out.println(result);
     }
